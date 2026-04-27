@@ -8,34 +8,33 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float moveSpeed = 6f;
     [SerializeField] float jumpForce = 4f;
-    public bool isJumping = false;
-    
+    public bool isJumping = true;
+
 
     private float moveInput;
     private float lastMoveInput = 1f;
     private bool isFacingRight = true;
-  
-    
+
+
 
 
     private void Awake()
     {
-       rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
     }
     // Update is called once per frame
     void Update()
     {
         moveInput = Input.GetAxis("Horizontal");
-        if(moveInput != 0f)
-            lastMoveInput = moveInput;
 
-        if(Input.GetButtonDown("Jump") && !isJumping)
+        if (Input.GetButtonDown("Jump") && !isJumping)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             isJumping = true;
         }
 
         Flip();
+
     }
 
     private void FixedUpdate()
@@ -45,29 +44,30 @@ public class PlayerController : MonoBehaviour
 
     void Move()
     {
-        
+
     }
 
     void Jump()
     {
 
     }
-    
+
     void Flip()
     {
-        if (isFacingRight && moveInput < 0f || !isFacingRight || moveInput > 0f)
+        if (isFacingRight && moveInput < 0f || !isFacingRight && moveInput > 0f)
         {
-            isFacingRight = !isFacingRight;
-            Vector3 ls = transform.localScale;
-            ls.x = 0.3538062f; 
+        
+            Vector2 ls = transform.localScale;
+            ls.x *= -1f;
             transform.localScale = ls;
 
+            isFacingRight = !isFacingRight;
         }
-        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        isJumping = false; 
+        isJumping = false;
     }
 }
