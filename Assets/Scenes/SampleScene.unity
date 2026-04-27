@@ -353,6 +353,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 587909174084493951, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
+      propertyPath: jumpForce
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1378379839114332628, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_Size.x
       value: 2.4993076
@@ -375,7 +379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6287407562817955527, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.35380617
+      value: -0.3538062
       objectReference: {fileID: 0}
     - target: {fileID: 6287407562817955527, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_LocalScale.y
@@ -423,7 +427,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8552939121564371083, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_FlipX
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

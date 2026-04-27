@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     private float moveInput;
     private float lastMoveInput = 1f;
-    private bool isFacingRight = false;
+    private bool isFacingRight = true;
   
     
 
@@ -59,10 +59,11 @@ public class PlayerController : MonoBehaviour
         {
             isFacingRight = !isFacingRight;
             Vector3 ls = transform.localScale;
-            ls.x = 1f; 
+            ls.x = 0.3538062f; 
             transform.localScale = ls;
 
         }
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
