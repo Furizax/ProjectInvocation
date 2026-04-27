@@ -345,6 +345,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1748389045 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2774916040809554583, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
+  m_PrefabInstance: {fileID: 6348480771999226974}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1748389054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748389045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c590c681b49434cbd392142699ccb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
 --- !u!1001 &6348480771999226974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -375,7 +393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6287407562817955527, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.44124183
+      value: -0.4030744
       objectReference: {fileID: 0}
     - target: {fileID: 6287407562817955527, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_LocalScale.y
@@ -383,11 +401,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6287407562817955527, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.6812
+      value: -0.956
       objectReference: {fileID: 0}
     - target: {fileID: 6287407562817955527, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1677
+      value: 0.032
       objectReference: {fileID: 0}
     - target: {fileID: 6287407562817955527, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_LocalPosition.z
@@ -423,7 +441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8552939121564371083, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_FlipX
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8552939121564371083, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_Size.x
@@ -444,7 +462,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2774916040809554583, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1748389054}
   m_SourcePrefab: {fileID: 100100000, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

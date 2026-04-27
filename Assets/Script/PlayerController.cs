@@ -42,16 +42,6 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
 
-    void Move()
-    {
-
-    }
-
-    void Jump()
-    {
-
-    }
-
     void Flip()
     {
         if (isFacingRight && moveInput < 0f || !isFacingRight && moveInput > 0f)
@@ -70,4 +60,5 @@ public class PlayerController : MonoBehaviour
     {
         isJumping = false;
     }
+
 }
