@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {
-    Transform player;
+    public Transform player;
 
     EnnemyStat stats;
-    float distanceToPlayer;
+
+    private float distanceToPlayer;
 
     enum State
     {
@@ -20,22 +21,26 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-
+        stats = GetComponent<EnnemyStat>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
     private void Update()
     {
+        distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+        Vector2 direction = player.transform.position - transform.position;
 
+        transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, stats.moveSpeed * Time.deltaTime);
     }
 
     void UpdateState()
     {
-       
+
     }
 
     void HandleState()
     {
-        // switch(currentState)
+
     }
 
     void HandleIdle()
