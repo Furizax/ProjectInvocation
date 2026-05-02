@@ -8,6 +8,7 @@ public class EnnemyStat : MonoBehaviour
     [SerializeField] public float damage;
     [SerializeField] public float moveSpeed;
     [SerializeField] public float detectionRange;
+    [SerializeField] public float chaseDistance;
     [SerializeField] public float attackRange;
     [SerializeField] public float attackDelay; 
 }
