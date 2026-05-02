@@ -13,7 +13,9 @@ public class EnemyAI : MonoBehaviour
     private Rigidbody2D rb;
     private Transform currentTarget;
     EnnemyStat stats;
+    private PlayerHealth health;
     private float distanceToPlayer;
+    public bool isPlayerDetected = false;
     public bool isChasing;
 
     enum State
@@ -59,11 +61,9 @@ public class EnemyAI : MonoBehaviour
         {
             case State.Idle:
                 HandleIdle();
-                Debug.Log("Idle");
                 break;
             case State.Chase:
                 HandleChase();
-                Debug.Log("Chase");
                 break;
 
         }
@@ -71,6 +71,8 @@ public class EnemyAI : MonoBehaviour
 
     void HandleIdle()
     {
+        isChasing = false;
+        isPlayerDetected = false;
         Vector2 Point = currentTarget.position - transform.position;
         if (currentTarget == pointB.transform)
         {
@@ -110,14 +112,21 @@ public class EnemyAI : MonoBehaviour
             if (Vector2.Distance(transform.position, player.position) < stats.chaseDistance)
             {
                 isChasing = true;
+                isPlayerDetected = true;
             }
         }
     }
 
-    void HandleAttack()
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        // infliger dégâts (plus tard)
-
+        if(collision.collider.gameObject.tag == "Player")
+        {
+            if(health == null)
+            {
+                health = collision.gameObject.GetComponent<PlayerHealth>();
+            }
+            health.TakeDamage(stats.damage);
+        }
     }
 
     private void OnDrawGizmos()

@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] int maxHealth;
-    int currentHealth;
+    [SerializeField] public int maxHealth;
+    public int currentHealth;
 
     bool isDead = false;
 
@@ -20,7 +20,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth -= damage;
 
-        if (currentHealth >= 0)
+        if (currentHealth <= 0)
         {
             isDead = true;
             Die();
