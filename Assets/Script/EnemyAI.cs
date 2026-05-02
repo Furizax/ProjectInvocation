@@ -16,9 +16,6 @@ public class EnemyAI : MonoBehaviour
     private float distanceToPlayer;
     public bool isChasing;
 
-
-
-
     enum State
     {
         Idle,
@@ -34,12 +31,69 @@ public class EnemyAI : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         currentTarget = pointB.transform;
+        currentState = State.Idle;
     }
 
     private void Update()
     {
         distanceToPlayer = Vector2.Distance(transform.position, player.position);
+        UpdateState();
+        HandleState();
+    }
 
+    void UpdateState()
+    {
+        if(distanceToPlayer > stats.detectionRange)
+        {
+            currentState = State.Idle;
+        }
+        if(distanceToPlayer < stats.detectionRange)
+        {
+            currentState = State.Chase;
+        }
+    }
+
+    void HandleState()
+    {
+        switch (currentState)
+        {
+            case State.Idle:
+                HandleIdle();
+                Debug.Log("Idle");
+                break;
+            case State.Chase:
+                HandleChase();
+                Debug.Log("Chase");
+                break;
+
+        }
+    }
+
+    void HandleIdle()
+    {
+        Vector2 Point = currentTarget.position - transform.position;
+        if (currentTarget == pointB.transform)
+        {
+            rb.velocity = new Vector2(stats.moveSpeed, 0);
+        }
+        else
+        {
+            rb.velocity = new Vector2(-stats.moveSpeed, 0);
+        }
+
+        if (Vector2.Distance(transform.position, currentTarget.position) < 0.5f && currentTarget == pointB.transform)
+        {
+            currentTarget = pointA.transform;
+        }
+
+        if (Vector2.Distance(transform.position, currentTarget.position) < 0.5f && currentTarget == pointA.transform)
+        {
+            currentTarget = pointB.transform;
+        }
+    }
+
+    void HandleChase()
+    {
         if (isChasing)
         {
             if (transform.position.x > player.transform.position.x)
@@ -53,67 +107,11 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            if (Vector2.Distance(transform.position, player.position) < stats.chaseDistance )
+            if (Vector2.Distance(transform.position, player.position) < stats.chaseDistance)
             {
                 isChasing = true;
             }
-
-            Vector2 Point = currentTarget.position - transform.position;
-            if (currentTarget == pointB.transform)
-            {
-                rb.velocity = new Vector2(stats.moveSpeed, 0);
-            }
-            else
-            {
-                rb.velocity = new Vector2(-stats.moveSpeed, 0);
-            }
-
-            if (Vector2.Distance(transform.position, currentTarget.position) < 0.5f && currentTarget == pointB.transform)
-            {
-                currentTarget = pointA.transform;
-            }
-
-            if (Vector2.Distance(transform.position, currentTarget.position) < 0.5f && currentTarget == pointA.transform)
-            {
-                currentTarget = pointB.transform;
-            }
         }
-    }
-
-
-
-
-    /*
-    distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-    Vector2 direction = player.transform.position - transform.position;
-
-    transform.position = Vector2.MoveTowards(this.transform.position, player.transform.position, stats.moveSpeed * Time.deltaTime); 
-    */
-
-
-
-
-    void UpdateState()
-    {
-
-    }
-
-    void HandleState()
-    {
-        switch (currentState)
-        {
-
-        }
-    }
-
-    void HandleIdle()
-    {
-
-    }
-
-    void HandleChase()
-    {
-
     }
 
     void HandleAttack()
