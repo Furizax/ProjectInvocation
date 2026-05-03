@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemyAI : MonoBehaviour
 {
@@ -12,11 +15,10 @@ public class EnemyAI : MonoBehaviour
 
     private Rigidbody2D rb;
     private Transform currentTarget;
-    EnnemyStat stats;
-    private PlayerHealth health;
+    EnemyStat stats;
     private float distanceToPlayer;
-    public bool isPlayerDetected = false;
-    public bool isChasing;
+    private Vector2 moveDirection;
+    private float lastAttackTime;
 
     enum State
     {
@@ -29,9 +31,9 @@ public class EnemyAI : MonoBehaviour
 
     private void Start()
     {
-        stats = GetComponent<EnnemyStat>();
+        stats = GetComponent<EnemyStat>();
         rb = GetComponent<Rigidbody2D>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         currentTarget = pointB.transform;
         currentState = State.Idle;
     }
@@ -39,20 +41,7 @@ public class EnemyAI : MonoBehaviour
     private void Update()
     {
         distanceToPlayer = Vector2.Distance(transform.position, player.position);
-        UpdateState();
         HandleState();
-    }
-
-    void UpdateState()
-    {
-        if(distanceToPlayer > stats.detectionRange)
-        {
-            currentState = State.Idle;
-        }
-        if(distanceToPlayer < stats.detectionRange)
-        {
-            currentState = State.Chase;
-        }
     }
 
     void HandleState()
@@ -61,19 +50,23 @@ public class EnemyAI : MonoBehaviour
         {
             case State.Idle:
                 HandleIdle();
+                if (distanceToPlayer < stats.detectionRange)
+                    currentState = State.Chase;
                 break;
             case State.Chase:
                 HandleChase();
+                if (distanceToPlayer < stats.attackRange) currentState = State.Attack;
+                else if (distanceToPlayer > stats.detectionRange) currentState = State.Idle;
                 break;
-
+            case State.Attack:
+                HandleAttack();
+                if (distanceToPlayer > stats.attackRange) currentState = State.Chase;
+                break;
         }
     }
 
     void HandleIdle()
     {
-        isChasing = false;
-        isPlayerDetected = false;
-        Vector2 Point = currentTarget.position - transform.position;
         if (currentTarget == pointB.transform)
         {
             rb.velocity = new Vector2(stats.moveSpeed, 0);
@@ -96,36 +89,25 @@ public class EnemyAI : MonoBehaviour
 
     void HandleChase()
     {
-        if (isChasing)
-        {
-            if (transform.position.x > player.transform.position.x)
-            {
-                transform.position += Vector3.left * stats.moveSpeed * Time.deltaTime; //Si le joueur est chassé, en étant à gauche de l'ennemi
-            }
-            if (transform.position.x < player.transform.position.x)
-            {
-                transform.position += Vector3.right * stats.moveSpeed * Time.deltaTime; //Si le joueur est chassé, en étant à droite de l'ennemi
-            }
-        }
-        else
-        {
-            if (Vector2.Distance(transform.position, player.position) < stats.chaseDistance)
-            {
-                isChasing = true;
-                isPlayerDetected = true;
-            }
-        }
+        Vector3 direction = (player.position - transform.position).normalized;
+        moveDirection = direction;
+        rb.velocity = new Vector2(moveDirection.x, 0) * stats.chaseSpeed;
+
+
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void HandleAttack()
     {
-        if(collision.collider.gameObject.tag == "Player")
+        if (Time.time >= lastAttackTime + stats.attackCooldown)
         {
-            if(health == null)
+
+            IDamageable damageable = player.GetComponent<IDamageable>();
+            if (damageable != null)
             {
-                health = collision.gameObject.GetComponent<PlayerHealth>();
+                rb.velocity = Vector2.zero;
+                damageable.TakeDamage(stats.damage);
             }
-            health.TakeDamage(stats.damage);
+            lastAttackTime = Time.time;
         }
     }
 
@@ -136,4 +118,6 @@ public class EnemyAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(pointA.transform.position, pointB.transform.position);
     }
+
 }
+

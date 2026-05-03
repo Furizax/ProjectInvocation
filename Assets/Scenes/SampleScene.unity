@@ -511,7 +511,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.00000032782555, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -522,7 +522,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.0152717, y: 1}
   m_EdgeRadius: 0
 --- !u!212 &2054827130
 SpriteRenderer:
@@ -585,7 +585,7 @@ Transform:
   m_GameObject: {fileID: 2054827127}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.42, y: -1.13, z: 0}
+  m_LocalPosition: {x: 11.412, y: -1.145, z: 0}
   m_LocalScale: {x: 0.69559395, y: 0.59441406, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -604,12 +604,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1
-  damage: 3
+  damage: 2
   moveSpeed: 3
+  chaseSpeed: 5
   detectionRange: 7
   chaseDistance: 3
-  attackRange: 0
-  attackDelay: 0
+  attackRange: 1.4
+  attackCooldown: 1.5
 --- !u!114 &2054827133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,8 +626,6 @@ MonoBehaviour:
   player: {fileID: 1748389059}
   pointA: {fileID: 75997151}
   pointB: {fileID: 1424225990}
-  isPlayerDetected: 0
-  isChasing: 0
 --- !u!1001 &6348480771999226974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -641,7 +640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1378379839114332628, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_Size.x
-      value: 2.978368
+      value: 3.0336196
       objectReference: {fileID: 0}
     - target: {fileID: 1378379839114332628, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_Size.y
@@ -649,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1378379839114332628, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_Offset.x
-      value: -0.17137992
+      value: 0.08515847
       objectReference: {fileID: 0}
     - target: {fileID: 1378379839114332628, guid: 7ae41f60afafa844f80c07b36fb9a608, type: 3}
       propertyPath: m_Offset.y

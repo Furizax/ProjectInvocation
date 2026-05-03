@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnnemyHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
-    EnnemyStat ennemyStat;
+    EnemyStat ennemyStat;
     int currentHealth;
     bool isDead;
 

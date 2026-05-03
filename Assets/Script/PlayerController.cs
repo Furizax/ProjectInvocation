@@ -15,9 +15,6 @@ public class PlayerController : MonoBehaviour
     private float lastMoveInput = 1f;
     private bool isFacingRight = true;
 
-
-
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
