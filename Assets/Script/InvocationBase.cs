@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class InvocationBase : MonoBehaviour
 {
-    [SerializeField] Transform player;
 
     [SerializeField] float followDistance;
     [SerializeField] float followSpeed;
@@ -16,6 +15,9 @@ public class InvocationBase : MonoBehaviour
     [SerializeField] float attackCooldown;
 
     [SerializeField] float detectionRange;
+
+    private Transform player;
+    private Transform currentTarget;
 
     private float lastAttackTime;
     private Rigidbody2D rb;
@@ -31,14 +33,17 @@ public class InvocationBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        List<Transform> currentEnemies = HandleNearbyEnemies();
-
+       
         HandleFollowingPlayer();
         checkDistanceFromPlayer();
     }
 
     void HandleFollowingPlayer()
     {
+        //Si l'invocation a une cible elle ne suit pas le joueur 
+        if (currentTarget != null)
+            return;
+
         float distanceIP = Vector2.Distance(transform.position, player.position); //DistanceIP = Distance entre l'invocation et le joueur
 
         if (distanceIP > followDistance)
@@ -50,21 +55,34 @@ public class InvocationBase : MonoBehaviour
         }
     }
 
-    List<Transform> HandleNearbyEnemies()
+    void HandleNearbyEnemies()
     {
+        // Si la cible existe encore, on garde cette cible
+        if (currentTarget != null)
+            return;
+
         List<Transform> enemies = new List<Transform>();
         Collider2D[] hitCollider = Physics2D.OverlapCircleAll(transform.position, detectionRange);
 
-        foreach (var hits in hitCollider)
+        foreach (var hit in hitCollider)
         {
-            if (hits.CompareTag("Enemy"))
+            if (hit.CompareTag("Enemy"))
             {
-                enemies.Add(hits.transform);
+                enemies.Add(hit.transform);
                 Debug.Log("Enemy found");
             }
         }
 
-        return enemies;
+        //Aucun ennemis trouvé
+        if (enemies.Count == 0)
+            return;
+
+        //Choisir un ennemi aléatoire 
+        int randomIndex = Random.Range(0, enemies.Count);
+
+        currentTarget = enemies[randomIndex];
+
+
     }
 
     void HandleAttack()
