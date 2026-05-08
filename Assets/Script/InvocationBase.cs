@@ -35,6 +35,7 @@ public class InvocationBase : MonoBehaviour
     {
        
         HandleFollowingPlayer();
+        HandleNearbyEnemies();
         checkDistanceFromPlayer();
     }
 
