@@ -9,10 +9,12 @@ public class InvocationBase : MonoBehaviour
     [SerializeField] float followDistance;
     [SerializeField] float followSpeed;
     [SerializeField] float maxDistanceFromPlayer;
+    [SerializeField] float OffenseSpeed;
 
     [SerializeField] int damage;
     [SerializeField] float attackRange;
     [SerializeField] float attackCooldown;
+
 
     [SerializeField] float detectionRange;
 
@@ -33,10 +35,11 @@ public class InvocationBase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
-        HandleFollowingPlayer();
         HandleNearbyEnemies();
+        MoveToEnemy();
+        HandleAttack();
         checkDistanceFromPlayer();
+        HandleFollowingPlayer();
     }
 
     void HandleFollowingPlayer()
@@ -82,14 +85,49 @@ public class InvocationBase : MonoBehaviour
         int randomIndex = Random.Range(0, enemies.Count);
 
         currentTarget = enemies[randomIndex];
-
-
     }
 
     void HandleAttack()
     {
+      
+        if (currentTarget == null)
+            return;
 
+        float distanceToEnemy = distanceToEnemy = Vector2.Distance(transform.position, currentTarget.position);
+
+        if (distanceToEnemy > attackRange)
+            return;
+
+        if (currentTarget != null)
+          
+        if (Time.time < lastAttackTime + attackCooldown)
+            return;
+
+        IDamageable damageable = currentTarget.GetComponent<IDamageable>();
+
+
+        if (damageable != null)
+        {
+            damageable.TakeDamage(damage);
+        }
+
+        lastAttackTime = Time.time;
     }
+
+    void MoveToEnemy()
+    {
+        if (currentTarget == null)
+            return;
+
+        float distanceToEnemy = Vector2.Distance(transform.position, currentTarget.position);
+
+        if (currentTarget != null && distanceToEnemy > attackRange)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, OffenseSpeed * Time.deltaTime) ;
+            Debug.Log(distanceToEnemy);
+        }
+    }
+
     void checkDistanceFromPlayer()
     {
         float DistanceToPlayer = Vector2.Distance(transform.position, player.position);

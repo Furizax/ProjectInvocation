@@ -9,8 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeed = 6f;
     [SerializeField] float jumpForce = 4f;
     public bool isJumping = true;
-
-
+    
     private float moveInput;
     private float lastMoveInput = 1f;
     private bool isFacingRight = true;
@@ -30,8 +29,8 @@ public class PlayerController : MonoBehaviour
             isJumping = true;
         }
 
-        Flip();
 
+        Flip();
     }
 
     private void FixedUpdate()
