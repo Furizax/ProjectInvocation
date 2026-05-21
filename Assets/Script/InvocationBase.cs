@@ -109,6 +109,7 @@ public class InvocationBase : MonoBehaviour
         if (damageable != null)
         {
             damageable.TakeDamage(damage);
+            Debug.Log("Enemy hitted");
         }
 
         lastAttackTime = Time.time;

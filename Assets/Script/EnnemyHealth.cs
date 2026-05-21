@@ -4,23 +4,29 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    EnemyStat ennemyStat;
+    EnemyStat enemyStat;
     int currentHealth;
     bool isDead;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = ennemyStat.maxHealth;
+        enemyStat = GetComponent<EnemyStat>();
+
+        currentHealth = enemyStat.maxHealth;
     }
 
     public void TakeDamage(int damage)
     {
-        if(isDead)
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
         {
+            isDead = true;
             Die();
-            isDead = true; 
         }
+
+
     }
 
     void Die()
