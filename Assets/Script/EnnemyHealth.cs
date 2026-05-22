@@ -25,8 +25,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             isDead = true;
             Die();
         }
-
-
     }
 
     void Die()

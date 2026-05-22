@@ -96,7 +96,7 @@ public class InvocationBase : MonoBehaviour
         float distanceToEnemy = distanceToEnemy = Vector2.Distance(transform.position, currentTarget.position);
 
         if (distanceToEnemy > attackRange)
-            return;
+            return; 
 
         if (currentTarget != null)
           

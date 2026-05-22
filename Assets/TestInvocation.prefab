@@ -101,12 +101,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   followDistance: 3
   followSpeed: 5
-  maxDistanceFromPlayer: 9
+  maxDistanceFromPlayer: 25
   OffenseSpeed: 5
   damage: 2
   attackRange: 1
   attackCooldown: 5
-  detectionRange: 5
+  detectionRange: 15
 --- !u!61 &1618124000737153528
 BoxCollider2D:
   m_ObjectHideFlags: 0
