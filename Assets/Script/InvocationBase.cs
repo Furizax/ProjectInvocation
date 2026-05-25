@@ -6,17 +6,7 @@ using UnityEngine;
 public class InvocationBase : MonoBehaviour
 {
 
-    [SerializeField] float followDistance;
-    [SerializeField] float followSpeed;
-    [SerializeField] float maxDistanceFromPlayer;
-    [SerializeField] float OffenseSpeed;
-
-    [SerializeField] int damage;
-    [SerializeField] float attackRange;
-    [SerializeField] float attackCooldown;
-
-
-    [SerializeField] float detectionRange;
+    InvocationStats stats;
 
     private Transform player;
     private Transform currentTarget;
@@ -28,6 +18,7 @@ public class InvocationBase : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        stats = GetComponent<InvocationStats>();
         player = GameObject.FindWithTag("Player").transform;
 
     }
@@ -50,12 +41,12 @@ public class InvocationBase : MonoBehaviour
 
         float distanceIP = Vector2.Distance(transform.position, player.position); //DistanceIP = Distance entre l'invocation et le joueur
 
-        if (distanceIP > followDistance)
+        if (distanceIP > stats.followDistance)
         {
             transform.position = Vector2.MoveTowards(
                 transform.position,
                 player.position,
-                followSpeed * Time.deltaTime);
+                stats.followSpeed * Time.deltaTime);
         }
     }
 
@@ -66,7 +57,7 @@ public class InvocationBase : MonoBehaviour
             return;
 
         List<Transform> enemies = new List<Transform>();
-        Collider2D[] hitCollider = Physics2D.OverlapCircleAll(transform.position, detectionRange);
+        Collider2D[] hitCollider = Physics2D.OverlapCircleAll(transform.position, stats.detectionRange);
 
         foreach (var hit in hitCollider)
         {
@@ -95,12 +86,12 @@ public class InvocationBase : MonoBehaviour
 
         float distanceToEnemy = distanceToEnemy = Vector2.Distance(transform.position, currentTarget.position);
 
-        if (distanceToEnemy > attackRange)
+        if (distanceToEnemy > stats.attackRange)
             return; 
 
         if (currentTarget != null)
           
-        if (Time.time < lastAttackTime + attackCooldown)
+        if (Time.time < lastAttackTime + stats.attackCooldown)
             return;
 
         IDamageable damageable = currentTarget.GetComponent<IDamageable>();
@@ -108,7 +99,7 @@ public class InvocationBase : MonoBehaviour
 
         if (damageable != null)
         {
-            damageable.TakeDamage(damage);
+            damageable.TakeDamage(stats.damage);
             Debug.Log("Enemy hitted");
         }
 
@@ -122,9 +113,9 @@ public class InvocationBase : MonoBehaviour
 
         float distanceToEnemy = Vector2.Distance(transform.position, currentTarget.position);
 
-        if (currentTarget != null && distanceToEnemy > attackRange)
+        if (currentTarget != null && distanceToEnemy > stats.attackRange)
         {
-            transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, OffenseSpeed * Time.deltaTime) ;
+            transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, stats.offenseSpeed * Time.deltaTime) ;
             Debug.Log(distanceToEnemy);
         }
     }
@@ -133,7 +124,7 @@ public class InvocationBase : MonoBehaviour
     {
         float DistanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (DistanceToPlayer > maxDistanceFromPlayer)
+        if (DistanceToPlayer > stats.maxDistanceFromPlayer)
         {
             Destroy(gameObject);
         }
@@ -142,6 +133,6 @@ public class InvocationBase : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.DrawWireSphere(transform.position, stats.detectionRange);
     }
 }

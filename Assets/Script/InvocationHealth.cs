@@ -4,14 +4,34 @@ using UnityEngine;
 
 public class InvocationHealth : MonoBehaviour
 {
-    int currentHealth;
-    bool isDead; 
+    InvocationStats stats;
+    public int currentHealth;
+    bool isDead;
+    bool canSummon;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        stats = GetComponent<InvocationStats>();
+
+        currentHealth = stats.maxHealth;
     }
 
-    
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        if (currentHealth <= 0)
+        {
+            isDead = true;
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
+    }
+
+
 }

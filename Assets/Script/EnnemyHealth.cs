@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     EnemyStat enemyStat;
-    int currentHealth;
+    public int currentHealth;
     bool isDead;
 
     // Start is called before the first frame update

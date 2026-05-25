@@ -10,7 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6651327432749982412}
   - component: {fileID: 7219000124098125558}
+  - component: {fileID: -2453026784754467545}
   - component: {fileID: 6629409755663764294}
+  - component: {fileID: -1538322271843926106}
   - component: {fileID: 1618124000737153528}
   - component: {fileID: 5055061310517295302}
   m_Layer: 6
@@ -87,6 +89,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-2453026784754467545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278094851427113821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b5f2d80c90a6e840b5b8a8dbc927600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 6
+  heathRegen: 0
+  damage: 0
+  followSpeed: 3
+  offenseSpeed: 4
+  followDistance: 20
+  maxDistanceFromPlayer: 25
+  detectionRange: 20
+  attackRange: 3
+  attackCooldown: 5
+  RechargeCooldown: 0
 --- !u!114 &6629409755663764294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,14 +124,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 526415422d659a349a4e4a159bc7b955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followDistance: 3
-  followSpeed: 5
-  maxDistanceFromPlayer: 25
-  OffenseSpeed: 5
-  damage: 2
-  attackRange: 1
-  attackCooldown: 5
-  detectionRange: 15
+--- !u!114 &-1538322271843926106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5278094851427113821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22aa5460f843af64e8ff00a5aee6fcf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &1618124000737153528
 BoxCollider2D:
   m_ObjectHideFlags: 0
