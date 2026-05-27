@@ -109,7 +109,7 @@ MonoBehaviour:
   followDistance: 20
   maxDistanceFromPlayer: 25
   detectionRange: 20
-  attackRange: 3
+  attackRange: 1
   attackCooldown: 5
   RechargeCooldown: 0
 --- !u!114 &6629409755663764294
@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22aa5460f843af64e8ff00a5aee6fcf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 0
 --- !u!61 &1618124000737153528
 BoxCollider2D:
   m_ObjectHideFlags: 0

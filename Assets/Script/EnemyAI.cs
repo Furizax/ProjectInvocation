@@ -19,6 +19,7 @@ public class EnemyAI : MonoBehaviour
     private float distanceToTarget;
     private Vector2 moveDirection;
     private float lastAttackTime;
+    private bool hasBeenHitByInvocation;
 
     enum State
     {
@@ -73,9 +74,6 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.Attack:
                 HandleAttack();
-                Debug.Log(
-                    "Distance: " + distanceToTarget +
-                    " AttackRange: " + stats.attackRange);
                 if (distanceToTarget > stats.attackRange) currentState = State.Chase;
                 break;
         }
@@ -121,29 +119,61 @@ public class EnemyAI : MonoBehaviour
         if (currentTarget != null)
             return;
 
-        List<Transform> targets = new List<Transform>();
-        Collider2D[] hitCollider = Physics2D.OverlapCircleAll(transform.position, stats.detectionRange);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, stats.detectionRange);
 
-        foreach (var hit in hitCollider)
+        Transform playerTarget = null; 
+        List<Transform> invocations = new List<Transform>();
+
+        foreach(var hit  in hits)
         {
-            if (hit.CompareTag("Player") || hit.CompareTag("Invocation"))
+            if(hit.CompareTag("Player"))
             {
-                targets.Add(hit.transform);
-                Debug.Log(hit.name);
-                Debug.Log("Target Found");
+                playerTarget = hit.transform;
+            }
+
+            if(hit.CompareTag("Invocation"))
+            {
+                invocations.Add(hit.transform);
             }
         }
 
-        if (targets.Count == 0)
+        if(hasBeenHitByInvocation && invocations.Count > 0)
+        {
+            currentTarget = invocations[0];
             return;
+        }
 
-        currentTarget = targets[0];
+        if(playerTarget != null)
+        {
+            currentTarget = playerTarget;
+            return;
+        }    
+
+        if(invocations.Count > 0)
+        {
+            currentTarget = invocations[0];
+        }
+        
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        currentTarget = newTarget;
+    }
+
+    public void OnHit(Transform attacker)
+    {
+        currentTarget = attacker;
+        currentState = State.Chase;
+    }
+
+    public void onHitByInvocation()
+    {
+        hasBeenHitByInvocation = true;
     }
 
     void HandleAttack()
     {
-        Debug.Log("AttackState");
-
         if (currentTarget == null)
             return;
 

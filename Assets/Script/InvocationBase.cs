@@ -101,6 +101,12 @@ public class InvocationBase : MonoBehaviour
         {
             damageable.TakeDamage(stats.damage);
             Debug.Log("Enemy hitted");
+
+            EnemyAI enemy = currentTarget.GetComponent<EnemyAI>();  
+            if(enemy != null)
+            {
+                enemy.OnHit(transform);
+            }
         }
 
         lastAttackTime = Time.time;
