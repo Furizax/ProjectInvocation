@@ -39,20 +39,18 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-
         SearchForTarget();
-        HandleState();
         if (currentTarget == null)
         {
             distanceToTarget = Mathf.Infinity;
-           
+
         }
         else
         {
             distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
         }
 
-    
+        HandleState();
     }
 
     void HandleState()
@@ -75,6 +73,9 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.Attack:
                 HandleAttack();
+                Debug.Log(
+                    "Distance: " + distanceToTarget +
+                    " AttackRange: " + stats.attackRange);
                 if (distanceToTarget > stats.attackRange) currentState = State.Chase;
                 break;
         }
@@ -111,6 +112,7 @@ public class EnemyAI : MonoBehaviour
         Vector3 direction = (currentTarget.position - transform.position).normalized;
         moveDirection = direction;
         rb.velocity = new Vector2(moveDirection.x, 0) * stats.chaseSpeed;
+        Debug.Log(currentTarget.name);
 
     }
 
@@ -127,6 +129,7 @@ public class EnemyAI : MonoBehaviour
             if (hit.CompareTag("Player") || hit.CompareTag("Invocation"))
             {
                 targets.Add(hit.transform);
+                Debug.Log(hit.name);
                 Debug.Log("Target Found");
             }
         }
@@ -139,6 +142,8 @@ public class EnemyAI : MonoBehaviour
 
     void HandleAttack()
     {
+        Debug.Log("AttackState");
+
         if (currentTarget == null)
             return;
 
@@ -147,12 +152,14 @@ public class EnemyAI : MonoBehaviour
 
         if (Time.time >= lastAttackTime + stats.attackCooldown)
         {
-
+            Debug.Log(distanceToTarget);
+            Debug.Log(stats.attackRange);
             IDamageable damageable = currentTarget.GetComponent<IDamageable>();
             if (damageable != null)
             {
                 rb.velocity = Vector2.zero;
                 damageable.TakeDamage(stats.damage);
+                Debug.Log("Target Hit");
             }
             lastAttackTime = Time.time;
         }

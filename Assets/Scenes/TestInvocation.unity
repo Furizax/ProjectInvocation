@@ -513,6 +513,10 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4356538786380108803, guid: b02cba93f02172945a60100717540502, type: 3}
+      propertyPath: attackRange
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6794056680148999004, guid: b02cba93f02172945a60100717540502, type: 3}
       propertyPath: m_Name
       value: Enemy

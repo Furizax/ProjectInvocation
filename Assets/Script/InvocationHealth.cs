@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InvocationHealth : MonoBehaviour
+public class InvocationHealth : MonoBehaviour, IDamageable
 {
     InvocationStats stats;
     public int currentHealth;
