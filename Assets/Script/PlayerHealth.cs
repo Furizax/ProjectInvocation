@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
@@ -29,7 +30,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     void Die()
     {
-        if (isDead)
-            Destroy(gameObject);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);  
     }
 }
