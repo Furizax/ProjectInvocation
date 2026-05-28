@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class InvocationHealth : MonoBehaviour, IDamageable
 {
-    InvocationStats stats;
+    private InvocationStats stats;
+    private InvocationManager manager;
+
     public int currentHealth;
-    bool isDead;
-    bool canSummon;
+
 
     // Start is called before the first frame update
     void Start()
     {
         stats = GetComponent<InvocationStats>();
-
         currentHealth = stats.maxHealth;
     }
+
+    public void SetManager(InvocationManager mgr)
+    {
+        manager = mgr;
+    }    
 
     public void TakeDamage(int damage)
     {
@@ -23,13 +28,17 @@ public class InvocationHealth : MonoBehaviour, IDamageable
 
         if (currentHealth <= 0)
         {
-            isDead = true;
             Die();
         }
     }
 
     void Die()
     {
+        if(manager != null)
+        {
+            manager.OnInvocationDeath();
+        }
+
         Destroy(gameObject);
     }
 

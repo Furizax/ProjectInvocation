@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,46 +7,79 @@ public class InvocationManager : MonoBehaviour
 {
     [SerializeField] GameObject prefab;
     [SerializeField] public Transform spawnPoint;
-    GameObject currentInvocation;
+    private GameObject currentInvocation;
 
-   
-    Transform player;
+    private float rechargeCooldown = 10f;
+    private float cooldownTimer;
 
-    // Start is called before the first frame update
-    void Start()
+    private enum State
     {
-        
+        Ready,
+        Active,
+        Cooldown
     }
+
+    private State state = State.Ready;
 
     // Update is called once per frame
     void Update()
     {
         HandleInput();
+        HandleCooldown();
     }
 
     void HandleInput()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if(currentInvocation != null)
-                DespawnInvocation();
-            else 
+            if (state == State.Ready)
                 SpawnInvocation();
+            else if(state == State.Active)
+                DespawnInvocation();
         }
-       
+
     }
 
     void SpawnInvocation()
     {
-        currentInvocation = Instantiate(prefab,spawnPoint.position,spawnPoint.rotation);
+        currentInvocation = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+
+        state = State.Active;
+
+        currentInvocation.GetComponent<InvocationHealth>().SetManager(this);
     }
 
     void DespawnInvocation()
     {
-        if(currentInvocation != null)
+        if (currentInvocation != null)
         {
             Destroy(currentInvocation);
             currentInvocation = null;
         }
+        //Empêche de considérer l'invocation comme morte et mettre le cooldown
+        state = State.Ready;
+    }
+
+    public void OnInvocationDeath()
+    {
+        currentInvocation = null;
+        state = State.Cooldown;
+        cooldownTimer = rechargeCooldown;
+    }
+
+    private void HandleCooldown()
+    {
+        if (state != State.Cooldown)
+            return;
+
+        cooldownTimer -= Time.deltaTime;
+
+        if( cooldownTimer <= 0 )
+            state = State.Ready;
+    }
+
+    private bool HasActiveInvocation()
+    {
+        return state == State.Active;
     }
 }

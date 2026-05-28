@@ -5,7 +5,6 @@ using UnityEngine;
 public class InvocationStats : MonoBehaviour
 {
     public int maxHealth;
-    public int heathRegen;
     public int damage;
     public float followSpeed;
     public float offenseSpeed;
@@ -14,5 +13,4 @@ public class InvocationStats : MonoBehaviour
     public float detectionRange;
     public float attackRange;
     public float attackCooldown;
-    public float RechargeCooldown;
 }
