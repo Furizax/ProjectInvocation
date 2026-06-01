@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class EnemyStat : MonoBehaviour
 {
-    [SerializeField] public int maxHealth;
-    [SerializeField] public int damage;
-    [SerializeField] public float moveSpeed;
-    [SerializeField] public float chaseSpeed;
-    [SerializeField] public float detectionRange;
-    [SerializeField] public float chaseDistance;
-    [SerializeField] public float attackRange;
-    [SerializeField] public float attackCooldown;
+    public GameObject InvocationPrefab;
+    public int maxHealth;
+    public int damage;
+    public float moveSpeed;
+    public float chaseSpeed;
+    public float detectionRange;
+    public float chaseDistance;
+    public float attackRange;
+    public float attackCooldown;
+
 }

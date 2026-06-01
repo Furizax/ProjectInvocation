@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
-    [SerializeField] public int maxHealth;
+    public int maxHealth;
     public int currentHealth;
 
     bool isDead = false;

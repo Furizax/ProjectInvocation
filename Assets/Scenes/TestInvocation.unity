@@ -148,7 +148,7 @@ Transform:
   m_GameObject: {fileID: 311601907}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.57, y: -2.32, z: 0}
+  m_LocalPosition: {x: -6.94, y: -2.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -525,6 +525,10 @@ PrefabInstance:
       propertyPath: attackCooldown
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4356538786380108803, guid: b02cba93f02172945a60100717540502, type: 3}
+      propertyPath: InvocationPrefab
+      value: 
+      objectReference: {fileID: 6794056680148999004, guid: f7373e68f86380e4e94005663094b23f, type: 3}
     - target: {fileID: 6794056680148999004, guid: b02cba93f02172945a60100717540502, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -583,6 +587,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentHealth: 0
+  enemySoul: {fileID: 4881961942302412822, guid: 9f13d0072691d60439034a27c3a45a68, type: 3}
 --- !u!1001 &6348480771999226974
 PrefabInstance:
   m_ObjectHideFlags: 0

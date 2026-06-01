@@ -8,11 +8,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public int currentHealth;
     bool isDead;
 
+    [SerializeField] private GameObject enemySoul;
+
     // Start is called before the first frame update
     void Start()
     {
         enemyStat = GetComponent<EnemyStat>();
-
         currentHealth = enemyStat.maxHealth;
     }
 
@@ -29,6 +30,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     void Die()
     {
+        if (enemySoul != null)
+        {
+            Instantiate(enemySoul, transform.position, Quaternion.identity);
+        }
+        SoulPickup soulScript = enemySoul.GetComponent<SoulPickup>();
+        soulScript.invocationPrefab = enemyStat.InvocationPrefab;
+
         Destroy(gameObject);
     }
 }

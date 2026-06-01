@@ -12,6 +12,8 @@ public class InvocationManager : MonoBehaviour
     private float rechargeCooldown = 10f;
     private float cooldownTimer;
 
+    List<GameObject> invocationList = new List<GameObject>();
+
     private enum State
     {
         Ready,
