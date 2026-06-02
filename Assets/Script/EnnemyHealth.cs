@@ -32,11 +32,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         if (enemySoul != null)
         {
-            Instantiate(enemySoul, transform.position, Quaternion.identity);
+          GameObject soul = Instantiate(enemySoul, transform.position, Quaternion.identity);
+          SoulPickup soulScript = soul.GetComponent<SoulPickup>();
+            soulScript.invocationPrefab = enemyStat.InvocationPrefab;
         }
-        SoulPickup soulScript = enemySoul.GetComponent<SoulPickup>();
-        soulScript.invocationPrefab = enemyStat.InvocationPrefab;
-
         Destroy(gameObject);
     }
 }

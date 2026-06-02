@@ -12,7 +12,7 @@ public class InvocationManager : MonoBehaviour
     private float rechargeCooldown = 10f;
     private float cooldownTimer;
 
-    List<GameObject> invocationList = new List<GameObject>();
+    [SerializeField] GameObject[] invocationSlots = new GameObject[3];
 
     private enum State
     {
@@ -61,6 +61,12 @@ public class InvocationManager : MonoBehaviour
         //Empêche de considérer l'invocation comme morte et mettre le cooldown
         state = State.Ready;
     }
+
+    public void AddInvocation(GameObject newInvocation)
+    {
+        Debug.Log(newInvocation.name);
+    }
+
 
     public void OnInvocationDeath()
     {
