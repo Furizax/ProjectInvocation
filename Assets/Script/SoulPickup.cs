@@ -12,10 +12,11 @@ public class SoulPickup : MonoBehaviour
         if(collision.gameObject.CompareTag("Player"))
         {
             invocationManager = collision.gameObject.GetComponent<InvocationManager>();
-            Debug.Log(invocationManager);
-            invocationManager.AddInvocation(invocationPrefab);
-            
-            Destroy(gameObject);
+            if(invocationManager.hasFreeSlot())
+            {
+                invocationManager.AddInvocation(invocationPrefab);
+                Destroy(gameObject);
+            }
         }
     }
 }
