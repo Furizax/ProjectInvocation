@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class InvocationManager : MonoBehaviour
 {
+    [SerializeField] private InvocationUI ui;
+
     [SerializeField] GameObject baseInvocation;
     [SerializeField] public Transform spawnPoint;
     private GameObject currentInvocation;
@@ -26,31 +28,8 @@ public class InvocationManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("=== DEBUG INVOCATION MANAGER ===");
-        Debug.Log("Object: " + gameObject.name);
-
-        Debug.Log("BaseInvocation: " + baseInvocation);
-
-        if (invocationSlots == null)
-            Debug.Log("Slots ARRAY = NULL");
-        else
-            Debug.Log("Slots SIZE = " + invocationSlots.Length);
-
-        if (invocationSlots.Length > 0)
-            Debug.Log("Slot0 BEFORE: " + invocationSlots[0]);
-
         invocationSlots[0] = baseInvocation;
-
-        Debug.Log("Slot0 AFTER: " + invocationSlots[0]);
-
         SelectInvocation(0);
-    }
-
-    private void Awake()
-    {
-        Debug.Log("Manager on: " + gameObject.name);
-        Debug.Log("Is prefab instance? " + gameObject.scene.name);
-        Debug.Log("baseInvocation: " + baseInvocation);
     }
 
     // Update is called once per frame
@@ -64,8 +43,8 @@ public class InvocationManager : MonoBehaviour
     {
         //Selection des invocations
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectInvocation(0);
-        if(Input.GetKeyDown(KeyCode.Alpha2)) SelectInvocation(1);
-        if( Input.GetKeyDown(KeyCode.Alpha3)) SelectInvocation(2);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SelectInvocation(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectInvocation(2);
 
         // Touche Alpha1 dédiée à l'action de Spawn / Despawn de l'élément équipé
         if (Input.GetKeyDown(KeyCode.F))
@@ -81,7 +60,7 @@ public class InvocationManager : MonoBehaviour
     {
         if (state != State.Ready) return;
 
-        if(equippedInvocation == null)
+        if (equippedInvocation == null)
         {
             Debug.LogWarning("No invocation equipped");
             return;
@@ -90,7 +69,7 @@ public class InvocationManager : MonoBehaviour
         currentInvocation = Instantiate(equippedInvocation, spawnPoint.position, spawnPoint.rotation);
         state = State.Active;
 
-        Debug.Log($"Spawned: {currentInvocation.name}");
+        ui.RefreshUI();
         currentInvocation
            .GetComponent<InvocationHealth>()
            .SetManager(this);
@@ -105,6 +84,8 @@ public class InvocationManager : MonoBehaviour
         }
         //Empêche de considérer l'invocation comme morte et mettre le cooldown
         state = State.Ready;
+
+        ui.RefreshUI();
     }
 
     public void AddInvocation(GameObject newInvocation)
@@ -115,6 +96,7 @@ public class InvocationManager : MonoBehaviour
             {
                 invocationSlots[i] = newInvocation;
                 Debug.Log("invocation has been added: " + invocationSlots[i].name);
+                ui.RefreshUI();
                 return;
             }
         }
@@ -130,11 +112,11 @@ public class InvocationManager : MonoBehaviour
         if (invocationSlots[slotIndex] == null)
         {
             Debug.Log("Empty slot");
+            ui.RefreshUI();
             return;
         }
 
         equippedInvocation = invocationSlots[slotIndex];
-        Debug.Log($"Equipped: {equippedInvocation.name}");
     }
 
     public void OnInvocationDeath()
@@ -152,7 +134,11 @@ public class InvocationManager : MonoBehaviour
         cooldownTimer -= Time.deltaTime;
 
         if (cooldownTimer <= 0)
+        {
             state = State.Ready;
+            ui.RefreshUI();
+        }
+          
     }
 
     public bool hasFreeSlot()
@@ -166,5 +152,20 @@ public class InvocationManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public GameObject[] GetSlot()
+    {
+        return invocationSlots;
+    }
+
+    public GameObject GetEquipped()
+    {
+        return equippedInvocation;
+    }
+
+    public object GetCurrentInvocation()
+    {
+        return currentInvocation;
     }
 }
