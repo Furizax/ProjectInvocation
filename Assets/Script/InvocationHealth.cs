@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InvocationHealth : MonoBehaviour, IDamageable
 {
@@ -8,6 +9,8 @@ public class InvocationHealth : MonoBehaviour, IDamageable
     private InvocationManager manager;
 
     public int currentHealth;
+
+    [SerializeField] private Image healthFill;
 
 
     // Start is called before the first frame update
@@ -20,7 +23,12 @@ public class InvocationHealth : MonoBehaviour, IDamageable
     public void SetManager(InvocationManager mgr)
     {
         manager = mgr;
-    }    
+    }
+
+    public float GetHealthPercent()
+    {
+        return (float)currentHealth / stats.maxHealth;
+    }
 
     public void TakeDamage(int damage)
     {
@@ -30,6 +38,11 @@ public class InvocationHealth : MonoBehaviour, IDamageable
         {
             Die();
         }
+    }
+
+    public void SetBar(Image newBar)
+    {
+        healthFill = newBar;    
     }
 
     void Die()

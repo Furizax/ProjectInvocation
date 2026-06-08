@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InvocationManager : MonoBehaviour
 {
@@ -11,17 +12,14 @@ public class InvocationManager : MonoBehaviour
     [SerializeField] public Transform spawnPoint;
     private GameObject currentInvocation;
 
-    private float rechargeCooldown = 10f;
-    private float cooldownTimer;
-
     [SerializeField] GameObject[] invocationSlots;
     public GameObject equippedInvocation;
+
 
     private enum State
     {
         Ready,
         Active,
-        Cooldown
     }
 
     private State state = State.Ready;
@@ -36,7 +34,6 @@ public class InvocationManager : MonoBehaviour
     void Update()
     {
         HandleInput();
-        HandleCooldown();
     }
 
     void HandleInput()
@@ -69,7 +66,7 @@ public class InvocationManager : MonoBehaviour
         currentInvocation = Instantiate(equippedInvocation, spawnPoint.position, spawnPoint.rotation);
         state = State.Active;
 
-        ui.RefreshUI();
+        ui.UpdateUI();
         currentInvocation
            .GetComponent<InvocationHealth>()
            .SetManager(this);
@@ -85,7 +82,7 @@ public class InvocationManager : MonoBehaviour
         //Empêche de considérer l'invocation comme morte et mettre le cooldown
         state = State.Ready;
 
-        ui.RefreshUI();
+        ui.UpdateUI();
     }
 
     public void AddInvocation(GameObject newInvocation)
@@ -96,7 +93,7 @@ public class InvocationManager : MonoBehaviour
             {
                 invocationSlots[i] = newInvocation;
                 Debug.Log("invocation has been added: " + invocationSlots[i].name);
-                ui.RefreshUI();
+                ui.UpdateUI();
                 return;
             }
         }
@@ -112,7 +109,7 @@ public class InvocationManager : MonoBehaviour
         if (invocationSlots[slotIndex] == null)
         {
             Debug.Log("Empty slot");
-            ui.RefreshUI();
+            ui.UpdateUI();
             return;
         }
 
@@ -122,23 +119,6 @@ public class InvocationManager : MonoBehaviour
     public void OnInvocationDeath()
     {
         currentInvocation = null;
-        state = State.Cooldown;
-        cooldownTimer = rechargeCooldown;
-    }
-
-    private void HandleCooldown()
-    {
-        if (state != State.Cooldown)
-            return;
-
-        cooldownTimer -= Time.deltaTime;
-
-        if (cooldownTimer <= 0)
-        {
-            state = State.Ready;
-            ui.RefreshUI();
-        }
-          
     }
 
     public bool hasFreeSlot()
@@ -154,18 +134,19 @@ public class InvocationManager : MonoBehaviour
         return false;
     }
 
-    public GameObject[] GetSlot()
-    {
-        return invocationSlots;
-    }
-
     public GameObject GetEquipped()
     {
         return equippedInvocation;
     }
 
-    public object GetCurrentInvocation()
+    public GameObject GetCurrentInvocation()
     {
         return currentInvocation;
     }
+
+    public GameObject[] GetSlots()
+    {
+        return invocationSlots;
+    }
+
 }
