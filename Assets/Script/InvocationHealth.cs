@@ -25,9 +25,9 @@ public class InvocationHealth : MonoBehaviour, IDamageable
         manager = mgr;
     }
 
-    public float GetHealthPercent()
+    public float GetMaxHealth()
     {
-        return (float)currentHealth / stats.maxHealth;
+        return stats.maxHealth;
     }
 
     public void TakeDamage(int damage)

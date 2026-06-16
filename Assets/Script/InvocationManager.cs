@@ -66,10 +66,9 @@ public class InvocationManager : MonoBehaviour
         currentInvocation = Instantiate(equippedInvocation, spawnPoint.position, spawnPoint.rotation);
         state = State.Active;
 
-        ui.UpdateUI();
-        currentInvocation
-           .GetComponent<InvocationHealth>()
-           .SetManager(this);
+        ui.UpdateTextUI();
+        
+        InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
     }
 
     void DespawnInvocation()
@@ -82,7 +81,7 @@ public class InvocationManager : MonoBehaviour
         //Empêche de considérer l'invocation comme morte et mettre le cooldown
         state = State.Ready;
 
-        ui.UpdateUI();
+        ui.UpdateTextUI();
     }
 
     public void AddInvocation(GameObject newInvocation)
@@ -93,7 +92,8 @@ public class InvocationManager : MonoBehaviour
             {
                 invocationSlots[i] = newInvocation;
                 Debug.Log("invocation has been added: " + invocationSlots[i].name);
-                ui.UpdateUI();
+                ui.UpdateTextUI();
+                ui.ShowInvocationBar();
                 return;
             }
         }
@@ -109,7 +109,7 @@ public class InvocationManager : MonoBehaviour
         if (invocationSlots[slotIndex] == null)
         {
             Debug.Log("Empty slot");
-            ui.UpdateUI();
+            ui.UpdateTextUI();
             return;
         }
 
