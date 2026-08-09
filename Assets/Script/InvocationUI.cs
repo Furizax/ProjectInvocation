@@ -15,7 +15,7 @@ public class InvocationUI : MonoBehaviour
     [SerializeField] private TMP_Text equippedText;
 
     [SerializeField] private Image invocationHealthBar;
-    [SerializeField] private GameObject invocationHealthBarGo;
+    [SerializeField] private GameObject[] invocationHealthBars;
 
     private void Update()
     {
@@ -26,52 +26,39 @@ public class InvocationUI : MonoBehaviour
     //Update le text 
     public void UpdateTextUI()
     {
-        GameObject[] slots  = manager.GetSlots();
-        GameObject equipped = manager.GetEquipped();
-        bool isActive = manager.GetCurrentInvocation() != null;
+        GameObject[] slots = manager.GetSlots();
 
-        for(int i =0; i<slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i] == null)
             {
                 slotText[i].text = $"Slot {i + 1}: Empty";
-                slotText[i].color = Color.white ;   
+                slotText[i].color = Color.white;
             }
             else
             {
                 slotText[i].text = $"Slot {i + 1}: {slots[i].name}";
-
-                if (slots[i] == equipped && isActive) { slotText[i].color = Color.green; } 
-                else { slotText[i].color = Color.white; }
+                slotText[i].color = Color.white;
             }
         }
+
+        UpdateInvocationHpBar();
     }
 
     public void UpdateInvocationHpBar()
     {
-        GameObject currentInvocation = manager.GetCurrentInvocation();
+        GameObject[] slots = manager.GetSlots();
 
-        if(currentInvocation == null)
+        for (int i = 0; i < invocationHealthBars.Length; i++)
         {
-            Debug.Log(invocationHealthBar);
-            invocationHealthBar.fillAmount = 0 ;
-            return; 
+            if (slots[i] != null)
+            {
+                invocationHealthBars[i].SetActive(true);
+            }
+            else
+            {
+                invocationHealthBars[i].SetActive(false);
+            }
         }
-
-        InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
-
-        float hpPercent = (float)health.currentHealth / health.GetMaxHealth();
-
-        invocationHealthBar.fillAmount = hpPercent;
-    }
-
-    public void ShowInvocationBar()
-    {
-        invocationHealthBarGo.SetActive(true);
-    }
-
-    public void HideInvocationBar()
-    {
-        invocationHealthBarGo.SetActive(false);
     }
 }

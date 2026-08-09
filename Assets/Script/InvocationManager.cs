@@ -39,15 +39,20 @@ public class InvocationManager : MonoBehaviour
     void HandleInput()
     {
         //Selection des invocations
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SelectInvocation(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SelectInvocation(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectInvocation(2);
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            SelectInvocation(0);
 
-        // Touche Alpha1 dédiée à l'action de Spawn / Despawn de l'élément équipé
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            SelectInvocation(1);
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            SelectInvocation(2);
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (state == State.Ready)
                 SpawnInvocation();
+
             else if (state == State.Active)
                 DespawnInvocation();
         }
@@ -55,7 +60,8 @@ public class InvocationManager : MonoBehaviour
 
     void SpawnInvocation()
     {
-        if (state != State.Ready) return;
+        if (state != State.Ready)
+            return;
 
         if (equippedInvocation == null)
         {
@@ -63,12 +69,13 @@ public class InvocationManager : MonoBehaviour
             return;
         }
 
-        currentInvocation = Instantiate(equippedInvocation, spawnPoint.position, spawnPoint.rotation);
-        state = State.Active;
+        currentInvocation = Instantiate(
+            equippedInvocation,
+            spawnPoint.position,
+            spawnPoint.rotation
+        );
 
-        ui.UpdateTextUI();
-        
-        InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
+        state = State.Active;
     }
 
     void DespawnInvocation()
@@ -78,10 +85,8 @@ public class InvocationManager : MonoBehaviour
             Destroy(currentInvocation);
             currentInvocation = null;
         }
-        //Empêche de considérer l'invocation comme morte et mettre le cooldown
-        state = State.Ready;
 
-        ui.UpdateTextUI();
+        state = State.Ready;
     }
 
     public void AddInvocation(GameObject newInvocation)
@@ -93,7 +98,6 @@ public class InvocationManager : MonoBehaviour
                 invocationSlots[i] = newInvocation;
                 Debug.Log("invocation has been added: " + invocationSlots[i].name);
                 ui.UpdateTextUI();
-                ui.ShowInvocationBar();
                 return;
             }
         }
@@ -108,17 +112,25 @@ public class InvocationManager : MonoBehaviour
 
         if (invocationSlots[slotIndex] == null)
         {
-            Debug.Log("Empty slot");
+            equippedInvocation = null;
+
+            Debug.Log("Slot is empty");
+
             ui.UpdateTextUI();
             return;
         }
 
         equippedInvocation = invocationSlots[slotIndex];
+
+        Debug.Log($"Equipped: {equippedInvocation.name}");
+
+        ui.UpdateTextUI();
     }
 
     public void OnInvocationDeath()
     {
         currentInvocation = null;
+        state = State.Ready;
     }
 
     public bool hasFreeSlot()
