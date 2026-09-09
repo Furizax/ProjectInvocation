@@ -18,6 +18,8 @@ public class InvocationHealth : MonoBehaviour, IDamageable
     {
         stats = GetComponent<InvocationStats>();
         currentHealth = stats.maxHealth;
+
+        UpdateHPBar();
     }
 
     public void SetManager(InvocationManager mgr)
@@ -38,16 +40,22 @@ public class InvocationHealth : MonoBehaviour, IDamageable
         {
             Die();
         }
+
+        UpdateHPBar();
     }
 
-    public void SetBar(Image newBar)
+    void UpdateHPBar()
     {
-        healthFill = newBar;    
+        float value = currentHealth / (float)stats.maxHealth;
+        if(healthFill != null)
+        {
+            healthFill.fillAmount = value;
+        }
     }
 
     void Die()
     {
-        if(manager != null)
+        if (manager != null)
         {
             manager.OnInvocationDeath();
         }
@@ -57,3 +65,4 @@ public class InvocationHealth : MonoBehaviour, IDamageable
 
 
 }
+

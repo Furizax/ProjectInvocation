@@ -733,8 +733,10 @@ MonoBehaviour:
   - {fileID: 2003678620}
   equippedText: {fileID: 1799822689}
   invocationHealthBar: {fileID: 805323660}
-  invocationHealthBarGo: {fileID: 332992370}
-  invocationHealthBarGo2: {fileID: 2029139873}
+  invocationHealthBars:
+  - {fileID: 1120882698}
+  - {fileID: 332992370}
+  - {fileID: 2029139873}
 --- !u!1 &413993928 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6794056680148999004, guid: b02cba93f02172945a60100717540502, type: 3}
@@ -1468,7 +1470,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4356538786380108803, guid: b02cba93f02172945a60100717540502, type: 3}
       propertyPath: damage
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4356538786380108803, guid: b02cba93f02172945a60100717540502, type: 3}
       propertyPath: maxHealth
@@ -2075,7 +2077,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -203.67007, w: 0}
+  m_margin: {x: 0, y: 0, z: -247.29095, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
