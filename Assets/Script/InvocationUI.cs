@@ -14,7 +14,7 @@ public class InvocationUI : MonoBehaviour
     [SerializeField] private TMP_Text[] slotText; 
     [SerializeField] private TMP_Text equippedText;
 
-    [SerializeField] private Image invocationHealthBar;
+    [SerializeField] private Image[] invocationHealthBarsFill;
     [SerializeField] private GameObject[] invocationHealthBars;
 
     private void Update()
@@ -43,6 +43,14 @@ public class InvocationUI : MonoBehaviour
         }
 
         UpdateInvocationHpBar();
+    }
+
+    public Image GetInvocationHealthBar(int slotIndex)
+    {
+        if(slotIndex < 0 || slotIndex >= invocationHealthBars.Length)
+            return null;
+
+        return invocationHealthBarsFill[slotIndex];
     }
 
     public void UpdateInvocationHpBar()

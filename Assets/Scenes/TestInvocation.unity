@@ -732,7 +732,10 @@ MonoBehaviour:
   - {fileID: 331825667}
   - {fileID: 2003678620}
   equippedText: {fileID: 1799822689}
-  invocationHealthBar: {fileID: 805323660}
+  invocationHealthBarsFill:
+  - {fileID: 805323660}
+  - {fileID: 1833356140}
+  - {fileID: 371511167}
   invocationHealthBars:
   - {fileID: 1120882698}
   - {fileID: 332992370}

@@ -75,6 +75,11 @@ public class InvocationManager : MonoBehaviour
             spawnPoint.rotation
         );
 
+        InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
+        int slotIndex = GetEquippedSlotIndex(); 
+
+        health.SetHealtBar(ui.GetInvocationHealthBar(slotIndex));   
+
         state = State.Active;
     }
 
@@ -133,6 +138,17 @@ public class InvocationManager : MonoBehaviour
         state = State.Ready;
     }
 
+    public int  GetEquippedSlotIndex()
+    {
+        for(int i = 0; i< invocationSlots.Length; i++)
+        {
+            if (invocationSlots[i] == equippedInvocation)
+            {
+                return i;
+            }
+        }    
+        return -1;
+    }
     public bool hasFreeSlot()
     {
         foreach (GameObject slot in invocationSlots)
