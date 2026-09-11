@@ -13,8 +13,9 @@ public class InvocationManager : MonoBehaviour
     private GameObject currentInvocation;
 
     [SerializeField] GameObject[] invocationSlots;
-    public GameObject equippedInvocation;
+    private float[] invocationHealth;
 
+    public GameObject equippedInvocation;
 
     private enum State
     {
@@ -26,7 +27,19 @@ public class InvocationManager : MonoBehaviour
 
     private void Start()
     {
-        invocationSlots[2] = baseInvocation;
+        invocationSlots[0] = baseInvocation;
+
+        invocationHealth = new float[invocationSlots.Length];
+
+        for (int i = 0; i < invocationSlots.Length; i++)
+        {
+            if (invocationSlots[i] != null)
+            {
+                InvocationStats stats = invocationSlots[i].GetComponent<InvocationStats>();
+
+                invocationHealth[i] = stats.maxHealth;
+            }
+        }
         SelectInvocation(0);
     }
 
@@ -34,6 +47,7 @@ public class InvocationManager : MonoBehaviour
     void Update()
     {
         HandleInput();
+        RegenerateInvocations();
     }
 
     void HandleInput()
@@ -76,9 +90,11 @@ public class InvocationManager : MonoBehaviour
         );
 
         InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
-        int slotIndex = GetEquippedSlotIndex(); 
+        int slotIndex = GetEquippedSlotIndex();
 
-        health.SetHealtBar(ui.GetInvocationHealthBar(slotIndex));   
+        health.SetHealth(invocationHealth[slotIndex]); //Donner à l'invocation sa vie sauvegardé
+
+        health.SetHealtBar(ui.GetInvocationHealthBar(slotIndex));
 
         state = State.Active;
     }
@@ -87,6 +103,13 @@ public class InvocationManager : MonoBehaviour
     {
         if (currentInvocation != null)
         {
+            InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
+
+            int slotIndex = GetEquippedSlotIndex();
+
+            //Sauvegarder la vie actuelle 
+            invocationHealth[slotIndex] = health.GetCurrentHealth();
+
             Destroy(currentInvocation);
             currentInvocation = null;
         }
@@ -132,21 +155,39 @@ public class InvocationManager : MonoBehaviour
         ui.UpdateTextUI();
     }
 
+    void RegenerateInvocations()
+    {
+        for (int i = 0; i < invocationSlots.Length; i++)
+        {
+            if (invocationSlots[i] == null)
+                continue;
+            if (state == State.Active && i == GetEquippedSlotIndex())
+                continue;
+
+            InvocationStats stats = invocationSlots[i].GetComponent<InvocationStats>();
+
+            invocationHealth[i] += stats.regenerateRate * Time.deltaTime;
+
+            if (invocationHealth[i] > stats.maxHealth)
+                invocationHealth[i] = stats.maxHealth;
+        }
+    }
+
     public void OnInvocationDeath()
     {
         currentInvocation = null;
         state = State.Ready;
     }
 
-    public int  GetEquippedSlotIndex()
+    public int GetEquippedSlotIndex()
     {
-        for(int i = 0; i< invocationSlots.Length; i++)
+        for (int i = 0; i < invocationSlots.Length; i++)
         {
             if (invocationSlots[i] == equippedInvocation)
             {
                 return i;
             }
-        }    
+        }
         return -1;
     }
     public bool hasFreeSlot()

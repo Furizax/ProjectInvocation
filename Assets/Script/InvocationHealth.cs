@@ -12,27 +12,9 @@ public class InvocationHealth : MonoBehaviour, IDamageable
 
     [SerializeField] private Image healthFill;
 
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         stats = GetComponent<InvocationStats>();
-        currentHealth = stats.maxHealth;
-    }
-
-    public void SetManager(InvocationManager mgr)
-    {
-        manager = mgr;
-    }
-
-    public void SetHealtBar(Image bar)
-    {
-        healthFill = bar;
-    }
-
-    public float GetMaxHealth()
-    {
-        return stats.maxHealth;
     }
 
     public void TakeDamage(int damage)
@@ -50,10 +32,23 @@ public class InvocationHealth : MonoBehaviour, IDamageable
         }
     }
 
-    public void RegenHealth()
+    public void SetHealth(float health)
     {
-      
+        currentHealth = Mathf.RoundToInt(health);
+
+        if(healthFill != null)
+        {
+            healthFill.fillAmount = (float)currentHealth / stats.maxHealth;
+        }
     }
+
+    public int GetMaxHealth()
+    {
+        return stats.maxHealth;
+    }
+
+    public int GetCurrentHealth()
+    { return currentHealth; }
 
     void Die()
     {
@@ -65,6 +60,15 @@ public class InvocationHealth : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
+    public void SetManager(InvocationManager mgr)
+    {
+        manager = mgr;
+    }
+
+    public void SetHealtBar(Image bar)
+    {
+        healthFill = bar;
+    }
 
 }
 

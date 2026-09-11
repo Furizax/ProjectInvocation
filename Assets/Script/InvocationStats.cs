@@ -6,6 +6,7 @@ public class InvocationStats : MonoBehaviour
 {
     public int maxHealth;
     public int damage;
+    public float regenerateRate;
     public float followSpeed;
     public float offenseSpeed;
     public float followDistance;
