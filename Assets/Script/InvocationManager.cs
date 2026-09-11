@@ -174,6 +174,8 @@ public class InvocationManager : MonoBehaviour
 
             if (invocationHealth[i] > stats.maxHealth)
                 invocationHealth[i] = stats.maxHealth;
+
+            ui.UpdateInvocationHealth(i, invocationHealth[i], stats.maxHealth);
         }
     }
 
