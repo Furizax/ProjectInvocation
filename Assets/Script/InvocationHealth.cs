@@ -44,10 +44,15 @@ public class InvocationHealth : MonoBehaviour, IDamageable
             Die();
         }
 
-       if (healthFill != null)
+        if (healthFill != null)
         {
             healthFill.fillAmount = (float)currentHealth / stats.maxHealth;
         }
+    }
+
+    public void RegenHealth()
+    {
+      
     }
 
     void Die()

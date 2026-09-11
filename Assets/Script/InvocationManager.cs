@@ -26,7 +26,7 @@ public class InvocationManager : MonoBehaviour
 
     private void Start()
     {
-        invocationSlots[0] = baseInvocation;
+        invocationSlots[2] = baseInvocation;
         SelectInvocation(0);
     }
 
