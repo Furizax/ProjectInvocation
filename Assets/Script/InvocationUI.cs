@@ -45,14 +45,6 @@ public class InvocationUI : MonoBehaviour
         UpdateInvocationHpBar();
     }
 
-    public Image GetInvocationHealthBar(int slotIndex)
-    {
-        if(slotIndex < 0 || slotIndex >= invocationHealthBars.Length)
-            return null;
-
-        return invocationHealthBarsFill[slotIndex];
-    }
-
     public void UpdateInvocationHpBar()
     {
         GameObject[] slots = manager.GetSlots();
@@ -69,4 +61,23 @@ public class InvocationUI : MonoBehaviour
             }
         }
     }
+
+    public void UpdateInvocationHealth(int slotIndex, float currentHealth, float maxHealth)
+    {
+        Image healthBar = GetInvocationHealthBar(slotIndex);
+
+        if(healthBar != null)
+        {
+            healthBar.fillAmount = currentHealth / maxHealth;
+        }
+    }
+
+    public Image GetInvocationHealthBar(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= invocationHealthBars.Length)
+            return null;
+
+        return invocationHealthBarsFill[slotIndex];
+    }
+
 }

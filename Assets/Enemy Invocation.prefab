@@ -101,8 +101,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b5f2d80c90a6e840b5b8a8dbc927600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 20
   damage: 2
+  regenerateRate: 2
   followSpeed: 7
   offenseSpeed: 4
   followDistance: 5

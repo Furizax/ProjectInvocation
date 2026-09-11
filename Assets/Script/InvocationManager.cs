@@ -103,18 +103,18 @@ public class InvocationManager : MonoBehaviour
     {
         if (currentInvocation != null)
         {
-            InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
+            InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>(); //Obtenir le script des pv de l'invocation
 
             int slotIndex = GetEquippedSlotIndex();
 
             //Sauvegarder la vie actuelle 
             invocationHealth[slotIndex] = health.GetCurrentHealth();
 
-            Destroy(currentInvocation);
+            Destroy(currentInvocation); //Retirer l'invocation
             currentInvocation = null;
         }
 
-        state = State.Ready;
+        state = State.Ready; 
     }
 
     public void AddInvocation(GameObject newInvocation)
@@ -123,13 +123,17 @@ public class InvocationManager : MonoBehaviour
         {
             if (invocationSlots[i] == null)
             {
-                invocationSlots[i] = newInvocation;
+                invocationSlots[i] = newInvocation; //Ajouter la nouvelle invocation dans le tableau
+                InvocationStats stats = newInvocation.GetComponent<InvocationStats>(); // assigner les stats à la nouvelle invocation
+
+                invocationHealth[i] = stats.maxHealth; 
+
                 Debug.Log("invocation has been added: " + invocationSlots[i].name);
+
                 ui.UpdateTextUI();
                 return;
             }
         }
-
         Debug.Log("No free slots");
     }
 
