@@ -16,6 +16,7 @@ public class InvocationManager : MonoBehaviour
     private float[] invocationHealth;
 
     public GameObject equippedInvocation;
+    private int activeSlotIndex = -1;
 
     private enum State
     {
@@ -91,9 +92,10 @@ public class InvocationManager : MonoBehaviour
 
         InvocationHealth health = currentInvocation.GetComponent<InvocationHealth>();
         int slotIndex = GetEquippedSlotIndex();
+        activeSlotIndex = slotIndex;
 
         health.SetHealth(invocationHealth[slotIndex]); //Donner à l'invocation sa vie sauvegardé
-
+        health.SetManager(this);
         health.SetHealtBar(ui.GetInvocationHealthBar(slotIndex));
 
         state = State.Active;
@@ -165,15 +167,20 @@ public class InvocationManager : MonoBehaviour
         {
             if (invocationSlots[i] == null)
                 continue;
-            if (state == State.Active && i == GetEquippedSlotIndex())
+            if (state == State.Active && i == activeSlotIndex)
                 continue;
 
             InvocationStats stats = invocationSlots[i].GetComponent<InvocationStats>();
 
-            invocationHealth[i] += stats.regenerateRate * Time.deltaTime;
+            if (invocationHealth[i] < stats.maxHealth)
+            {
+                invocationHealth[i] += stats.regenerateRate * Time.deltaTime;
 
-            if (invocationHealth[i] > stats.maxHealth)
-                invocationHealth[i] = stats.maxHealth;
+                if (invocationHealth[i] > stats.maxHealth)
+                {
+                    invocationHealth[i] = stats.maxHealth;
+                }
+            }
 
             ui.UpdateInvocationHealth(i, invocationHealth[i], stats.maxHealth);
         }
@@ -181,6 +188,11 @@ public class InvocationManager : MonoBehaviour
 
     public void OnInvocationDeath()
     {
+        if(activeSlotIndex >= 0)
+        {
+            invocationHealth[activeSlotIndex] = 0;
+        }
+
         currentInvocation = null;
         state = State.Ready;
     }
