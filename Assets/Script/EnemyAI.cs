@@ -69,6 +69,7 @@ public class EnemyAI : MonoBehaviour
                 else if (distanceToTarget > stats.detectionRange)
                 {
                     currentTarget = null;
+                    ReturnToClosestPoint();
                     currentState = State.Idle;
                 }
                 break;
@@ -81,24 +82,17 @@ public class EnemyAI : MonoBehaviour
 
     void HandleIdle()
     {
-        if (nextPoint == pointB.transform)
-        {
-            rb.velocity = new Vector2(stats.moveSpeed, 0);
-            Debug.Log(rb.velocity);
-        }
-        else
-        {
-            rb.velocity = new Vector2(-stats.moveSpeed, 0);
-        }
+        Vector2 direction = (nextPoint.position - transform.position).normalized;
+     
+        rb.velocity = new Vector2(direction.x, 0) * stats.moveSpeed;
 
-        if (Vector2.Distance(transform.position, nextPoint.position) < 0.5f && nextPoint == pointB.transform)
+        if(Vector2.Distance(transform.position, nextPoint.position) < 0.5f)
         {
-            nextPoint = pointA.transform;
-        }
+            if (nextPoint == pointB.transform)
+                nextPoint = pointA.transform;
+            else 
+                nextPoint = pointB.transform;
 
-        if (Vector2.Distance(transform.position, nextPoint.position) < 0.5f && nextPoint == pointA.transform)
-        {
-            nextPoint = pointB.transform;
         }
     }
 
@@ -112,64 +106,6 @@ public class EnemyAI : MonoBehaviour
         rb.velocity = new Vector2(moveDirection.x, 0) * stats.chaseSpeed;
         Debug.Log(currentTarget.name);
 
-    }
-
-    void SearchForTarget()
-    {
-        if (currentTarget != null)
-            return;
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, stats.detectionRange);
-
-        Transform playerTarget = null; 
-        List<Transform> invocations = new List<Transform>();
-
-        foreach(var hit  in hits)
-        {
-            if(hit.CompareTag("Player"))
-            {
-                playerTarget = hit.transform;
-            }
-
-            if(hit.CompareTag("Invocation"))
-            {
-                invocations.Add(hit.transform);
-            }
-        }
-
-        if(hasBeenHitByInvocation && invocations.Count > 0)
-        {
-            currentTarget = invocations[0];
-            return;
-        }
-
-        if(playerTarget != null)
-        {
-            currentTarget = playerTarget;
-            return;
-        }    
-
-        if(invocations.Count > 0)
-        {
-            currentTarget = invocations[0];
-        }
-        
-    }
-
-    public void SetTarget(Transform newTarget)
-    {
-        currentTarget = newTarget;
-    }
-
-    public void OnHit(Transform attacker)
-    {
-        currentTarget = attacker;
-        currentState = State.Chase;
-    }
-
-    public void onHitByInvocation()
-    {
-        hasBeenHitByInvocation = true;
     }
 
     void HandleAttack()
@@ -193,6 +129,79 @@ public class EnemyAI : MonoBehaviour
             }
             lastAttackTime = Time.time;
         }
+    }
+
+    void SearchForTarget()
+    {
+        if (currentTarget != null)
+            return;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, stats.detectionRange);
+
+        Transform playerTarget = null;
+        List<Transform> invocations = new List<Transform>();
+
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                playerTarget = hit.transform;
+            }
+
+            if (hit.CompareTag("Invocation"))
+            {
+                invocations.Add(hit.transform);
+            }
+        }
+
+        if (hasBeenHitByInvocation && invocations.Count > 0)
+        {
+            currentTarget = invocations[0];
+            return;
+        }
+
+        if (playerTarget != null)
+        {
+            currentTarget = playerTarget;
+            return;
+        }
+
+        if (invocations.Count > 0)
+        {
+            currentTarget = invocations[0];
+        }
+
+    }
+
+    void ReturnToClosestPoint()
+    {
+        float distanceToA = Vector2.Distance(transform.position, pointA.transform.position);
+        float distanceToB = Vector2.Distance(transform.position, pointB.transform.position);    
+
+        if(distanceToA < distanceToB) 
+        {
+            nextPoint = pointA.transform;
+        }
+        else
+        {
+            nextPoint = pointB.transform;
+        }
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        currentTarget = newTarget;
+    }
+
+    public void OnHit(Transform attacker)
+    {
+        currentTarget = attacker;
+        currentState = State.Chase;
+    }
+
+    public void onHitByInvocation()
+    {
+        hasBeenHitByInvocation = true;
     }
 
     private void OnDrawGizmos()
