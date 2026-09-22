@@ -6,8 +6,8 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rb;
 
-    [SerializeField] float moveSpeed = 6f;
-    [SerializeField] float jumpForce = 4f;
+    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float jumpForce = 6f;
     public bool isJumping = true;
     
     private float moveInput;

@@ -16,6 +16,9 @@ public class EnemyAI : MonoBehaviour
     private Transform currentTarget;
     private Transform nextPoint;
     EnemyStat stats;
+    private Collider2D enemyCollider;
+    private Collider2D targetCollider;
+
     private float distanceToTarget;
     private Vector2 moveDirection;
     private float lastAttackTime;
@@ -34,6 +37,8 @@ public class EnemyAI : MonoBehaviour
     {
         stats = GetComponent<EnemyStat>();
         rb = GetComponent<Rigidbody2D>();
+        enemyCollider = GetComponent<Collider2D>();
+
         nextPoint = pointB.transform;
         currentState = State.Idle;
     }
@@ -44,11 +49,16 @@ public class EnemyAI : MonoBehaviour
         if (currentTarget == null)
         {
             distanceToTarget = Mathf.Infinity;
-
         }
         else
         {
-            distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
+            targetCollider = currentTarget.GetComponent<Collider2D>();
+
+            if (targetCollider != null)
+            {
+                ColliderDistance2D distance = enemyCollider.Distance(targetCollider);
+                distanceToTarget = distance.distance;
+            }
         }
 
         HandleState();
@@ -65,7 +75,7 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.Chase:
                 HandleChase();
-                if (distanceToTarget < stats.attackRange) currentState = State.Attack;
+                if (enemyCollider.IsTouching(targetCollider)) currentState = State.Attack;
                 else if (distanceToTarget > stats.detectionRange)
                 {
                     currentTarget = null;
@@ -83,14 +93,14 @@ public class EnemyAI : MonoBehaviour
     void HandleIdle()
     {
         Vector2 direction = (nextPoint.position - transform.position).normalized;
-     
+
         rb.velocity = new Vector2(direction.x, 0) * stats.moveSpeed;
 
-        if(Vector2.Distance(transform.position, nextPoint.position) < 0.5f)
+        if (Vector2.Distance(transform.position, nextPoint.position) < 0.5f)
         {
             if (nextPoint == pointB.transform)
                 nextPoint = pointA.transform;
-            else 
+            else
                 nextPoint = pointB.transform;
 
         }
@@ -104,7 +114,8 @@ public class EnemyAI : MonoBehaviour
         Vector3 direction = (currentTarget.position - transform.position).normalized;
         moveDirection = direction;
         rb.velocity = new Vector2(moveDirection.x, 0) * stats.chaseSpeed;
-        Debug.Log(currentTarget.name);
+       // Debug.Log("Distance : " + distanceToTarget);
+       // Debug.Log("Attack range : " + stats.attackRange);
 
     }
 
@@ -112,15 +123,22 @@ public class EnemyAI : MonoBehaviour
     {
         if (currentTarget == null)
             return;
+        
+        if (targetCollider == null)
+            return;
 
-        if (distanceToTarget > stats.attackRange)
+        if (!enemyCollider.IsTouching(targetCollider))
             return;
 
         if (Time.time >= lastAttackTime + stats.attackCooldown)
         {
             Debug.Log(distanceToTarget);
             Debug.Log(stats.attackRange);
+
             IDamageable damageable = currentTarget.GetComponent<IDamageable>();
+
+           // Debug.Log("Target : " + currentTarget.name);
+           // Debug.Log("Damageable : " + damageable);
             if (damageable != null)
             {
                 rb.velocity = Vector2.zero;
@@ -176,9 +194,9 @@ public class EnemyAI : MonoBehaviour
     void ReturnToClosestPoint()
     {
         float distanceToA = Vector2.Distance(transform.position, pointA.transform.position);
-        float distanceToB = Vector2.Distance(transform.position, pointB.transform.position);    
+        float distanceToB = Vector2.Distance(transform.position, pointB.transform.position);
 
-        if(distanceToA < distanceToB) 
+        if (distanceToA < distanceToB)
         {
             nextPoint = pointA.transform;
         }
@@ -206,11 +224,8 @@ public class EnemyAI : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(pointA.transform.position, 0.5f);
-        Gizmos.DrawWireSphere(pointB.transform.position, 0.5f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(pointA.transform.position, pointB.transform.position);
-    }
 
+
+    }
 }
 

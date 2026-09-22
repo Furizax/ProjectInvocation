@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1419760279612975678}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 6794056680148999004}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 11.412, y: -1.145, z: 0}
-  m_LocalScale: {x: 0.8347128, y: 0.59441406, z: 1}
+  m_LocalPosition: {x: 11.5539, y: -0.7895, z: 0}
+  m_LocalScale: {x: 2.805633, y: 1.3054075, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -100,13 +100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7698b7019a14b2b4bb479f1ad585eb9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1
-  damage: 2
+  InvocationPrefab: {fileID: 0}
+  maxHealth: 10
+  damage: 5
   moveSpeed: 3
   chaseSpeed: 5
   detectionRange: 7
   chaseDistance: 3
-  attackRange: 1.4
+  attackRange: 2.5
   attackCooldown: 1.5
 --- !u!114 &7390668105092692306
 MonoBehaviour:
@@ -120,7 +121,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d511279f54bec144fa926bca9c302784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   pointA: {fileID: 0}
   pointB: {fileID: 0}
 --- !u!61 &6987851285016789096

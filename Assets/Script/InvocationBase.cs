@@ -10,6 +10,8 @@ public class InvocationBase : MonoBehaviour
 
     private Transform player;
     private Transform currentTarget;
+    private Collider2D invocationCollider;
+    private Collider2D enemyCollider;
 
     private float lastAttackTime;
     private Rigidbody2D rb;
@@ -19,8 +21,10 @@ public class InvocationBase : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         stats = GetComponent<InvocationStats>();
-        player = GameObject.FindWithTag("Player").transform;
 
+        invocationCollider = GetComponent<Collider2D>();
+
+        player = GameObject.FindWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -84,12 +88,14 @@ public class InvocationBase : MonoBehaviour
         if (currentTarget == null)
             return;
 
-        float distanceToEnemy = distanceToEnemy = Vector2.Distance(transform.position, currentTarget.position);
+        enemyCollider = currentTarget.GetComponent<Collider2D>();
 
-        if (distanceToEnemy > stats.attackRange)
-            return; 
+        if (enemyCollider == null)
+            return;
 
-        if (currentTarget != null)
+        if (!invocationCollider.IsTouching(enemyCollider))
+            return;
+
           
         if (Time.time < lastAttackTime + stats.attackCooldown)
             return;
@@ -108,7 +114,6 @@ public class InvocationBase : MonoBehaviour
                 enemy.OnHit(transform);
             }
         }
-
         lastAttackTime = Time.time;
     }
 
@@ -117,13 +122,19 @@ public class InvocationBase : MonoBehaviour
         if (currentTarget == null)
             return;
 
-        float distanceToEnemy = Vector2.Distance(transform.position, currentTarget.position);
+        enemyCollider = currentTarget.GetComponent<Collider2D>();
 
-        if (currentTarget != null && distanceToEnemy > stats.attackRange)
-        {
-            transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, stats.offenseSpeed * Time.deltaTime) ;
-            Debug.Log(distanceToEnemy);
-        }
+        if(enemyCollider == null)
+            return;
+
+        if (invocationCollider.IsTouching(enemyCollider))
+            return;
+
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            currentTarget.position,
+            stats.offenseSpeed * Time.deltaTime);
+        
     }
 
     void checkDistanceFromPlayer()
