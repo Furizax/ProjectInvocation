@@ -85,7 +85,7 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.Attack:
                 HandleAttack();
-                if (distanceToTarget > stats.attackRange) currentState = State.Chase;
+                if (distanceToTarget > stats.attackRange) currentState = State.Idle;
                 break;
         }
     }
@@ -137,7 +137,7 @@ public class EnemyAI : MonoBehaviour
 
             IDamageable damageable = currentTarget.GetComponent<IDamageable>();
 
-           // Debug.Log("Target : " + currentTarget.name);
+            Debug.Log("Target : " + currentTarget.name);
            // Debug.Log("Damageable : " + damageable);
             if (damageable != null)
             {
