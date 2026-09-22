@@ -172,7 +172,7 @@ public class InvocationManager : MonoBehaviour
 
             InvocationStats stats = invocationSlots[i].GetComponent<InvocationStats>();
 
-            if (invocationHealth[i] < stats.maxHealth)
+            if (invocationHealth[i] < stats.maxHealth) //Si l'invocation meurt ou despawn lorsqu'elle n'est pas full vie
             {
                 invocationHealth[i] += stats.regenerateRate * Time.deltaTime;
 
@@ -182,7 +182,7 @@ public class InvocationManager : MonoBehaviour
                 }
             }
 
-            ui.UpdateInvocationHealth(i, invocationHealth[i], stats.maxHealth);
+            ui.UpdateInvocationHealth(i, invocationHealth[i], stats.maxHealth); //Affiche la regen de vie sur le UI
         }
     }
 
