@@ -105,8 +105,8 @@ MonoBehaviour:
   damage: 6
   regenerateRate: 3
   followSpeed: 9
-  offenseSpeed: 6
-  followDistance: 5
+  offenseSpeed: 8
+  followDistance: 6
   maxDistanceFromPlayer: 25
   detectionRange: 20
   attackRange: 1

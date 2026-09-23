@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void GroundCheck()
+    void GroundCheck() // Empêche le joueur de sauter s'il est dans le vide et qu'il n'a pas sauté
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
 
@@ -66,6 +66,8 @@ public class PlayerController : MonoBehaviour
         {
             isJumping = true;
         }
+        else
+        { isJumping = false; }
     }
 
     private void OnCollisionEnter2D(Collision2D collision) //Pourquoi lol
