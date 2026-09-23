@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2162485454627758887}
   - component: {fileID: 6872679902029821246}
   - component: {fileID: 4356538786380108803}
+  - component: {fileID: -6745402092896248382}
   - component: {fileID: 7390668105092692306}
   - component: {fileID: 1419760279612975678}
   - component: {fileID: 2709028774716978454}
@@ -100,7 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7698b7019a14b2b4bb479f1ad585eb9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InvocationPrefab: {fileID: 0}
+  InvocationPrefab: {fileID: 6794056680148999004, guid: 6f324ebc9637dcc43bf7ab4f8eaab84c, type: 3}
   maxHealth: 10
   damage: 5
   moveSpeed: 3
@@ -109,6 +110,20 @@ MonoBehaviour:
   chaseDistance: 3
   attackRange: 1.4
   attackCooldown: 1.5
+--- !u!114 &-6745402092896248382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6794056680148999004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097f5198e174c794abca34f28aa89c99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHealth: 0
+  enemySoul: {fileID: 4881961942302412822, guid: 9f13d0072691d60439034a27c3a45a68, type: 3}
 --- !u!114 &7390668105092692306
 MonoBehaviour:
   m_ObjectHideFlags: 0
